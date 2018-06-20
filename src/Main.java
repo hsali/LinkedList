@@ -1,19 +1,32 @@
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
-        LinkedList linkedList = new LinkedList();
-        linkedList.append(2);
-        linkedList.append(4);
-        linkedList.append(3);
 
-//        linkedList.removeTail();
-//        linkedList.removeAllGreater(2);
-        linkedList.list();
+        LinkedList linkedList = new LinkedList();
+        linkedList.add(3);
+        linkedList.add(2);
+        linkedList.add(4);
+
+        System.out.println("printing linked listAllElements : ");
+        linkedList.listAllElements();
+
+        System.out.println("Remove tailing element");
+        linkedList.removeTailElement();
+        System.out.println("After Remove tailing element");
+        linkedList.listAllElements();
+
+        System.out.println("adding one more element");
+        linkedList.add(5);
+        linkedList.listAllElements();
+        System.out.println("remove all elements which are greater than 2");
+        linkedList.removeAllGreater(2);
+        linkedList.listAllElements();
     }
 }
 
-
+/**
+ * Node to manage functions
+ */
 class Node {
     int data;
     Node next;
@@ -26,7 +39,12 @@ class Node {
 class LinkedList {
     Node head;
 
-    public void append(int data) {
+    /**
+     * all element in linked listAllElements
+     *
+     * @param data
+     */
+    public void add(int data) {
         if (head == null) {
             head = new Node(data);
             return;
@@ -38,13 +56,12 @@ class LinkedList {
         current.next = new Node(data);
     }
 
-    public void prepend(int data) {
-        Node newNode = new Node(data);
-        newNode.next = head;
-        head = newNode;
-    }
-
+    /**
+     * remove all elements which are greater than data argument
+     * @param data
+     */
     public void removeAllGreater(int data) {
+        Boolean isFirst = false;
         if (head == null)
             return;
 
@@ -54,22 +71,32 @@ class LinkedList {
                 head = null;
                 return;
             } else {
-                head = head.next;
+                isFirst = true;
             }
         }
 
         Node current = head;
         while (current.next != null) {
-            if (current.data > data) {
+            if (current.next.data > data) {
+                if (current.next.next == null) {
+                    current.next = null;
+                    break;
+                }
                 current.next = current.next.next;
+
             }
             current = current.next;
         }
+
+        if (isFirst)
+            head = head.next;
         return;
     }
 
-
-    public void removeTail() {
+    /**
+     * remove last added element
+     */
+    public void removeTailElement() {
 
         if (head.next == null) {
             head = null;
@@ -85,7 +112,10 @@ class LinkedList {
         }
     }
 
-    public void list() {
+    /**
+     * list out all elements
+     */
+    public void listAllElements() {
         if (head == null)
             return;
         Node current = head;
@@ -94,26 +124,6 @@ class LinkedList {
             current = current.next;
             System.out.println("node : " + current.data);
         }
-    }
-
-    public void deleteAt(int data) {
-        if (head == null)
-            return;
-
-        if (head.data == data) {
-            head = null;
-            return;
-        }
-
-        Node current = head;
-        while (current.next != null) {
-            if (current.next.data == data) {
-                current.next = current.next.next;
-                return;
-            }
-            current = current.next;
-        }
-
     }
 
 
